@@ -1,39 +1,36 @@
-import pyttsx3
 import PySimpleGUI as sg
+import pyttsx3
 
-# Create the GUI layout
-layout = [
-    [sg.Text("Enter the text you want to convert to speech:")],
-    [sg.InputText()],
-    [sg.Text("Select a voice:")],
-    [sg.Radio("Male", "voice", default=True, key="-MALE-"),
-     sg.Radio("Female", "voice", key="-FEMALE-")],
-    [sg.Button("Speak"), sg.Button("Exit")]
-]
+# Define the GUI layout
+layout = [[sg.Text('Enter some text:')],
+          [sg.Input(key='-INPUT-')],
+          [sg.Text('Select a voice:')],
+          [sg.Radio('Male', 'voice', key='-MALE-'), sg.Radio('Female', 'voice', key='-FEMALE-', default=True)],
+          [sg.Button('Speak'), sg.Button('Exit')]]
 
-# Create the window
-window = sg.Window("Text-to-Speech App", layout)
+# Create the GUI window
+window = sg.Window('Text to Speech App', layout)
 
-# Initialize the text-to-speech engine
+# Initialize the pyttsx3 engine
 engine = pyttsx3.init()
 
-# Start the main event loop
+# Main event loop
 while True:
     event, values = window.read()
-    if event == sg.WINDOW_CLOSED or event == "Exit":
+    if event in (sg.WIN_CLOSED, 'Exit'):
         break
-    if event == "Speak":
-        text = values[0]
-        if values["-MALE-"]:
-            engine.setProperty("voice", "english+m3")
-        elif values["-FEMALE-"]:
-            engine.setProperty("voice", "english+f3")
-        engine.say(text)
+    if event == 'Speak':
+        # Set the voice based on user input
+        if values['-MALE-']:
+            engine.setProperty('voice', 'english+m3')
+        else:
+            engine.setProperty('voice', 'english+f3')
+        # Speak the text
+        engine.say(values['-INPUT-'])
         engine.runAndWait()
 
-# Clean up the text-to-speech engine
+# Stop the pyttsx3 engine
 engine.stop()
-engine.shutdown()
 
-# Close the window
+# Close the GUI window
 window.close()
