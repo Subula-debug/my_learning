@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic-Tac-Toe</title>
+  </head>
+  <body>
+    <h1>Tic-Tac-Toe</h1>
+    <table style="border-collapse: collapse;">
+      <tr>
+        <td id="cell-0" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-1" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-2" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+      </tr>
+      <tr>
+        <td id="cell-3" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-4" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-5" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+      </tr>
+      <tr>
+        <td id="cell-6" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-7" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+        <td id="cell-8" style="width: 100px; height: 100px; border: 1px solid black; text-align: center; font-size: 72px; cursor: pointer;"></td>
+      </tr>
+    </table>
+    <button id="reset-button" style="margin-top: 20px; font-size: 24px;">Reset</button>
+    <script>
+      // JavaScript code goes here
+      const cells = document.querySelectorAll('td');
+const resetButton = document.getElementById('reset-button');
+const winningCombinations = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+  [0, 4, 8], [2, 4, 6] // Diagonals
+];
+
+let currentPlayer = 'X';
+let gameEnded = false;
+
+function makeMove(cell) {
+  if (cell.textContent !== '' || gameEnded) return;
+  cell.textContent = currentPlayer;
+  if (checkWin(currentPlayer)) {
+    gameEnded = true;
+    alert(`${currentPlayer} wins!`);
+    return;
+  }
+  if (checkTie()) {
+    gameEnded = true;
+    alert("It's a tie!");
+    return;
+  }
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  if (currentPlayer === 'O') {
+    // AI's turn
+    const index = findBestMove();
+    cells[index].click();
+  }
+}
+
+function checkWin(player) {
+  return winningCombinations.some(combination =>
+    combination.every(index => cells[index].textContent === player)
+  );
+}
+
+function checkTie() {
+  return [...cells].every(cell => cell.textContent !== '');
+}
+
+function findBestMove() {
+  let bestScore = -Infinity;
+  let bestMove;
+  for (let i = 0; i < cells.length; i++) {
+    if (cells[i].textContent === '') {
+      cells[i].textContent = 'O';
+      const score = minimax(false);
+      cells[i].textContent = '';
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = i;
+      }
+    }
+  }
+  return bestMove;
+}
+
+function minimax(isMaximizing)
+
+    </script>
+  </body>
+</html>
